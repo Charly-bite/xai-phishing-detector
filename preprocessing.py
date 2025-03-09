@@ -71,6 +71,81 @@ def extract_url_features(urls):
     try:
         suspicious_keywords = ['login', 'verify', 'account', 'secure', 'update']
         shortened_domains = r'(bit\.ly|goo\.gl|tinyurl|t\.co|ow\.ly)'
+        has_suspicious_url = 0import os
+import re
+import pandas as pd
+import numpy as np
+from bs4 import BeautifulSoup, MarkupResemblesLocatorWarning  # Updated import
+import warnings  # New import
+import nltk
+from nltk.corpus import stopwords
+import textstat
+import logging
+from logging.handlers import RotatingFileHandler
+
+# Suppress BeautifulSoup URL warnings
+warnings.filterwarnings("ignore", category=MarkupResemblesLocatorWarning)  # Added here
+
+# --------------------------------------
+# Configure Logging
+# --------------------------------------
+LOG_DIR = r"C:\Users\acvsa\PhishingDetector\logs"
+os.makedirs(LOG_DIR, exist_ok=True)
+
+# Initialize logger FIRST
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# Create handlers
+file_handler = RotatingFileHandler(
+    os.path.join(LOG_DIR, "preprocessing.log"),
+    maxBytes=1024*1024,  # 1MB
+    backupCount=3,
+    encoding='utf-8'
+)
+console_handler = logging.StreamHandler()
+
+# Formatting
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(module)s - %(message)s")
+file_handler.setFormatter(formatter)
+console_handler.setFormatter(formatter)
+
+# Add handlers to the logger
+logger.addHandler(file_handler)
+logger.addHandler(console_handler)
+
+# --------------------------------------
+# Initialize NLTK
+# --------------------------------------
+nltk.download('punkt', quiet=True)
+nltk.download('stopwords', quiet=True)
+stop_words = set(stopwords.words('english'))
+
+# --------------------------------------
+# Preprocessing Functions (Fixed Logging)
+# --------------------------------------
+def clean_email(text):
+    """Clean email text by removing HTML tags and special characters."""
+    try:
+        if pd.isna(text) or text.strip() == "":
+            logger.debug("Empty text encountered during cleaning")
+            return ""
+        soup = BeautifulSoup(text, 'html.parser')
+        cleaned = soup.get_text(separator=' ')
+        cleaned = re.sub(r'[^a-zA-Z0-9\s]', ' ', cleaned)
+        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+        return cleaned
+    except Exception as e:
+        logger.error(f"Error cleaning text: {str(e)}", exc_info=True)
+        return ""
+
+# In preprocessing.py, add after clean_email()
+
+def extract_url_features(urls):
+    """Extract URL-based features."""
+    try:
+        suspicious_keywords = ['login', 'verify', 'account', 'secure', 'update']
+        shortened_domains = r'(bit\.ly|goo\.gl|tinyurl|t\.co|ow\.ly)'
         has_suspicious_url = 0
         for url in urls:
             if re.match(r'http://', url):
@@ -88,7 +163,7 @@ def extract_url_features(urls):
         return 0, 0
 
 def extract_urgency(text):
-    """Count urgency-related keywords in text."""
+    """Count urgency-related keywords."""
     try:
         urgency_words = ['urgent', 'immediately', 'action required', 'verify', 'password', 'alert']
         return sum(text.lower().count(word) for word in urgency_words)
@@ -127,10 +202,12 @@ def preprocess_dataset(input_path, output_path):
         
         # Clean text and validate
         df['cleaned_text'] = df[text_col].apply(clean_email)
+        df['cleaned_text'] = df['cleaned_text'].fillna('')  # Handle NaN
         df = df[df['cleaned_text'].str.strip().astype(bool)]
         if df.empty:
             logger.warning("No valid text after cleaning!")
             return
+
 
         # ======== ADDED FEATURE EXTRACTION ========
         logger.info("🔗 Extracting URL features...")
@@ -141,21 +218,54 @@ def preprocess_dataset(input_path, output_path):
         df[['num_links', 'has_suspicious_url']] = df['urls'].apply(
             lambda x: extract_url_features(x)
         ).apply(pd.Series)
+  # Clean text and validate
+        df['cleaned_text'] = df[text_col].apply(clean_email)
+        df = df[df['cleaned_text'].str.strip().astype(bool)]
+        if df.empty:
+            logger.warning("No valid text after cleaning!")
+            return
 
+        # ------------------------------------------------------------
+        # Extract URLs and Features
+        # ------------------------------------------------------------
+        logger.info("🔗 Extracting URL features...")
+        url_pattern = r'https?://\S+|www\.\S+'
+        df['urls'] = df[text_col].apply(lambda x: re.findall(url_pattern, str(x)))
+        
+        # Extract URL-based features (num_links, has_suspicious_url)
+        df[['num_links', 'has_suspicious_url']] = df['urls'].apply(
+            lambda x: extract_url_features(x)
+        ).apply(pd.Series)
+
+        # ------------------------------------------------------------
+        # Urgency Keywords
+        # ------------------------------------------------------------
         logger.info("⏳ Calculating urgency scores...")
-        df['urgency_count'] = df['cleaned_text'].apply(extract_urgency)
+        df['urgency_count'] = df['cleaned_text'].apply(extract_urgency)  # <-- Fixed indentation
 
+        # ------------------------------------------------------------
+        # Readability Score
+        # ------------------------------------------------------------
         logger.info("📖 Calculating readability scores...")
         df['readability_score'] = df['cleaned_text'].apply(
             lambda x: textstat.flesch_reading_ease(x) if isinstance(x, str) else 0
         )
 
-        # ======== TOKENIZATION ========
+        # ------------------------------------------------------------
+        # Tokenization
+        # ------------------------------------------------------------
         logger.info("✂️ Tokenizing text...")
         df['tokenized_text'] = df['cleaned_text'].apply(
-            lambda x: nltk.word_tokenize(x.lower()) if isinstance(x, str) else []
+            lambda x: nltk.word_tokenize(x.lower()) 
+            if isinstance(x, str) and x.strip() != "" 
+            else []
         )
 
+        # Filter out empty token lists
+        df = df[df['tokenized_text'].apply(len) > 0]
+        if df.empty:
+            logger.error("No valid tokens after tokenization!")
+            sys.exit(1)
         # Save preprocessed data
         df.to_csv(output_path, index=False)
         logger.info(f"Saved {len(df)} rows to {output_path}")
