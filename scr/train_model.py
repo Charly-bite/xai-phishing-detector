@@ -35,7 +35,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.metrics import classification_report, accuracy_score, f1_score  # Added f1_score import
 
 # Import spaCy properly
 import spacy
@@ -450,19 +450,35 @@ def train_model(df):
 
         # Handle history results more safely
         if history is not None and hasattr(history, 'history'):
+            # Calculate F1 score for hybrid neural network on test data
+            # First, get predictions (need to convert from probabilities to binary predictions)
+            y_pred_proba = hybrid.model.predict({
+                'text_features': X_test_text,
+                'structural_features': X_test_struct
+            })
+            y_pred = (y_pred_proba > 0.5).astype(int).flatten()  # Convert probabilities to binary predictions
+            
+            # Calculate F1 score for hybrid neural network
+            f1 = f1_score(y_test, y_pred)
+            
             results['hybrid_nn'] = {
                 'loss': history.history.get('loss', [0])[-1],
                 'accuracy': history.history.get('accuracy', [0])[-1],
                 'val_loss': history.history.get('val_loss', [0])[-1],
-                'val_accuracy': history.history.get('val_accuracy', [0])[-1]
+                'val_accuracy': history.history.get('val_accuracy', [0])[-1],
+                'f1_score': float(f1)  # Added F1 score
             }
+            
+            # Log F1 score for hybrid model
+            logger.info(f"Hybrid Neural Network F1 Score: {f1:.4f}")
         else:
             logger.warning("No training history for hybrid model")
             results['hybrid_nn'] = {
                 'loss': None,
                 'accuracy': None,
                 'val_loss': None,
-                'val_accuracy': None
+                'val_accuracy': None,
+                'f1_score': None  # Added F1 score placeholder
             }
 
         # Generate explanations
@@ -508,8 +524,14 @@ def evaluate_model(model, X_test, y_test):
         X_test_values = X_test
         
     y_pred = model.predict(X_test_values)
+    
+    # Calculate F1 score (added)
+    f1 = f1_score(y_test, y_pred)
+    logger.info(f"Model F1 Score: {f1:.4f}")
+    
     return {
         'accuracy': accuracy_score(y_test, y_pred),
+        'f1_score': float(f1),  # Added F1 score
         'report': classification_report(y_test, y_pred, output_dict=True)
     }
 
@@ -546,6 +568,16 @@ def save_artifacts(training_results):
         with open(metrics_path, 'w') as f:
             json.dump(training_results['results'], f, indent=2)
             logger.info(f"Saved metrics to {metrics_path}")
+
+        # Save F1 scores separately for quick reference (added)
+        f1_scores = {
+            model_name: results.get('f1_score', 'N/A') 
+            for model_name, results in training_results['results'].items()
+        }
+        f1_path = os.path.join(model_dir, 'f1_scores.json')
+        with open(f1_path, 'w') as f:
+            json.dump(f1_scores, f, indent=2)
+            logger.info(f"Saved F1 scores to {f1_path}")
 
         logger.info("All artifacts saved successfully")
     except Exception as e:
@@ -609,6 +641,50 @@ def save_visualizations(explanations, save_dir):
         logger.error(f"Failed to save visualizations: {str(e)}", exc_info=True)
 
 # --------------------------------------
+# F1 Score Visualization (Added)
+# --------------------------------------
+def save_f1_visualization(training_results, save_dir):
+    """Create and save a bar chart of F1 scores for all models"""
+    try:
+        # Extract F1 scores for each model
+        models = []
+        f1_scores = []
+        
+        for model_name, results in training_results['results'].items():
+            if results.get('f1_score') is not None:
+                models.append(model_name)
+                f1_scores.append(results['f1_score'])
+        
+        if not models:
+            logger.warning("No F1 scores available to visualize")
+            return
+            
+        # Create bar chart
+        plt.figure(figsize=(10, 6))
+        bars = plt.bar(models, f1_scores, color=['blue', 'green', 'orange'])
+        
+        # Add value labels on top of bars
+        for bar in bars:
+            height = bar.get_height()
+            plt.text(bar.get_x() + bar.get_width()/2., height + 0.01,
+                    f'{height:.4f}', ha='center', va='bottom')
+        
+        plt.title('F1 Score Comparison Across Models')
+        plt.xlabel('Model')
+        plt.ylabel('F1 Score')
+        plt.ylim(0, 1.1)  # F1 score range is 0-1
+        plt.tight_layout()
+        
+        # Save the figure
+        f1_viz_path = os.path.join(save_dir, 'f1_score_comparison.png')
+        plt.savefig(f1_viz_path, dpi=300)
+        plt.close()
+        
+        logger.info(f"Saved F1 score visualization to {f1_viz_path}")
+    except Exception as e:
+        logger.error(f"Failed to create F1 score visualization: {str(e)}")
+
+# --------------------------------------
 # Main Execution
 # --------------------------------------
 if __name__ == "__main__":
@@ -616,6 +692,15 @@ if __name__ == "__main__":
         logger.info("Starting training pipeline...")
         df = load_data()
         training_results = train_model(df)
+        save_artifacts(training_results)
+        
+        # Add F1 score visualization
+        save_f1_visualization(training_results, r"C:\Users\acvsa\PhishingDetector\models")
+        
+        logger.info("Training completed successfully!")
+    except Exception as e:
+        logger.critical(f"Critical error: {str(e)}", exc_info=True)
+        sys.exit(1)
         save_artifacts(training_results)
         logger.info("Training completed successfully!")
     except Exception as e:
