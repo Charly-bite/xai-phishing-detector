@@ -50,7 +50,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 # Create handlers
-file_handler = logging.FileHandler(r"C:\Users\acvsa\PhishingDetector\training.log")
+file_handler = logging.FileHandler(r"#RUTA#")
 console_handler = logging.StreamHandler(sys.stdout)
 
 # Create formatters and add to handlers
@@ -67,7 +67,7 @@ logger.addHandler(console_handler)
 # --------------------------------------
 def load_data():
     try:
-        preprocessed_path = r"C:\Users\acvsa\PhishingDetector\data\preprocessed\Enron_preprocessed.csv"
+        preprocessed_path = r"#RUTA#\preprocessed\Enron_preprocessed.csv"
         logger.info(f"Loading data from: {preprocessed_path}")
         
         if not os.path.exists(preprocessed_path):
