@@ -1,10 +1,14 @@
-tensorflow==2.11.0
-alibi==0.9.0
-fastapi>=0.68.0
-uvicorn>=0.15.0
-scikit-learn>=1.0.2
-pandas>=1.3.0
-shap>=0.40.0
-lime>=0.2.0.1
-joblib>=1.0.1
-python-multipart>=0.0.5
+https://github.com/adang1345/PythonWindows/blob/master/3.10.12/python-3.10.12-full.exe #Descargar Python 3.10.12 32 bits
+https://github.com/adang1345/PythonWindows/blob/master/3.10.12/python-3.10.12-amd64-full.exe #Descargar Python 64bits
+
+https://github.com/Charly-bite/Phising-tool-XAI.git #Descargar proyecto
+
+.\venv\Scripts\activate #Entorno Virtual
+
+python src/preprocessing.py #Preprocessamiento de Datos
+
+python src/train_model.py #Train model
+
+https://github.com/Charly-bite/Phising-tool-XAI #URL del proyecto 
+
+pip install pandas numpy beautifulsoup4 nltk textstat scikit-learn tensorflow spacy joblib matplotlib shap lime alibi==0.5.1 && python -m spacy download en_core_web_sm #Librerias necesarias
