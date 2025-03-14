@@ -16,7 +16,7 @@ warnings.filterwarnings("ignore", category=MarkupResemblesLocatorWarning)  # Add
 # --------------------------------------
 # Configure Logging
 # --------------------------------------
-LOG_DIR = r"C:\Users\acvsa\PhishingDetector\logs"
+LOG_DIR = r"#RUTA#"
 os.makedirs(LOG_DIR, exist_ok=True)
 
 # Initialize logger FIRST
@@ -89,7 +89,7 @@ warnings.filterwarnings("ignore", category=MarkupResemblesLocatorWarning)  # Add
 # --------------------------------------
 # Configure Logging
 # --------------------------------------
-LOG_DIR = r"C:\Users\acvsa\PhishingDetector\logs"
+LOG_DIR = r"#RUTA#\logs"
 os.makedirs(LOG_DIR, exist_ok=True)
 
 # Initialize logger FIRST
