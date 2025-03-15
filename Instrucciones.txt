@@ -15,7 +15,7 @@ pip install numpy  #Librerias paso 1 #numpy: For numerical operations
 
 pip install pandas beautifulsoup4 textstat #pandas: For data manipulation #beautifulsoup4: For HTML parsing  #textstat: For readability metrics
 
-pip isntall ntlk #Paso 2.1 #nltk: For natural language processing
+ pip install nltk #Paso 2.1 #nltk: For natural language processing
 
 python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords')" #Paso 3
 
@@ -28,6 +28,4 @@ https://www.kaggle.com/datasets/naserabdullahalam/phishing-email-dataset #Datase
 python scr/preprocessing.py #Preprocessamiento de Datos
 
 python src/train_model.py #Train model
-
-
 
