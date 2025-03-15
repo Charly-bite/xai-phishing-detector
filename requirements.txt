@@ -9,6 +9,10 @@ python -m venv venv #Crear entorno virtual
 
 .\venv\Scripts\activate #Ejecutar entorno virtual
 
+pip install pandas numpy beautifulsoup4 nltk textstat scikit-learn tensorflow spacy joblib matplotlib shap lime alibi #Librerias paso 1
+
+python -m spacy download en_core_web_sm #Paso 2
+
 python src/preprocessing.py #Preprocessamiento de Datos
 
 python src/train_model.py #Train model
