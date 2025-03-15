@@ -3,7 +3,11 @@ https://github.com/adang1345/PythonWindows/blob/master/3.10.12/python-3.10.12-am
 
 https://github.com/Charly-bite/Phising-tool-XAI.git #Descargar proyecto
 
-.\venv\Scripts\activate #Entorno Virtual
+cd #RUTA#
+
+python -m venv venv #Crear entorno virtual
+
+.\venv\Scripts\activate #Ejecutar entorno virtual
 
 python src/preprocessing.py #Preprocessamiento de Datos
 
