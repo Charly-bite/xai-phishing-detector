@@ -1,3 +1,5 @@
+https://github.com/Charly-bite/Phising-tool-XAI #URL del proyecto 
+
 https://github.com/adang1345/PythonWindows/blob/master/3.10.12/python-3.10.12-full.exe #Descargar Python 3.10.12 32 bits
 https://github.com/adang1345/PythonWindows/blob/master/3.10.12/python-3.10.12-amd64-full.exe #Descargar Python 64bits
 
@@ -9,11 +11,11 @@ python -m venv venv #Crear entorno virtual
 
 .\venv\Scripts\activate #Ejecutar entorno virtual
 
-pip install numpy  #Librerias paso 1
+pip install numpy  #Librerias paso 1 #numpy: For numerical operations
 
-pip install os-sys re panda beautifulsoup4 nltk textstat #Paso 2
+pip install pandas beautifulsoup4 textstat #pandas: For data manipulation #beautifulsoup4: For HTML parsing  #textstat: For readability metrics
 
-pip isntall ntlk #Paso 2.1
+pip isntall ntlk #Paso 2.1 #nltk: For natural language processing
 
 python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords')" #Paso 3
 
@@ -23,19 +25,6 @@ python -m spacy download en_core_web_sm #Paso 4
 
 https://www.kaggle.com/datasets/naserabdullahalam/phishing-email-dataset #Dataset
 
-python src/preprocessing.py #Preprocessamiento de Datos
-
-
-pip install tensorflow pandas matplotlib scikit-learn joblib spacy shap lime alibi
-python -m spacy download en_core_web_sm #Para correr train_model.py
+python scr/preprocessing.py #Preprocessamiento de Datos
 
 python src/train_model.py #Train model
-
-https://github.com/Charly-bite/Phising-tool-XAI #URL del proyecto 
-
-https://www.kaggle.com/datasets/subhajournal/phishingemails #Dataset
-python src/train_model.py #Train model
-
-https://github.com/Charly-bite/Phising-tool-XAI #URL del proyecto 
-
-https://www.kaggle.com/datasets/subhajournal/phishingemails #Dataset
