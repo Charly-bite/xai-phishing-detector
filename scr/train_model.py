@@ -50,7 +50,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 # Create handlers
-file_handler = logging.FileHandler(r"#RUTA#")
+file_handler = logging.FileHandler(r"RUTA")
 console_handler = logging.StreamHandler(sys.stdout)
 
 # Create formatters and add to handlers
@@ -67,7 +67,7 @@ logger.addHandler(console_handler)
 # --------------------------------------
 def load_data():
     try:
-        preprocessed_path = r"#RUTA#\preprocessed\Enron_preprocessed.csv"
+        preprocessed_path = r"RUTA\data\preprocessed\Enron_preprocessed.csv"
         logger.info(f"Loading data from: {preprocessed_path}")
         
         if not os.path.exists(preprocessed_path):
@@ -540,7 +540,7 @@ def evaluate_model(model, X_test, y_test):
 # --------------------------------------
 def save_artifacts(training_results):
     try:
-        model_dir = r"C:\Users\acvsa\PhishingDetector\models"
+        model_dir = r"RUTA\models"
         os.makedirs(model_dir, exist_ok=True)
 
         # Save models
@@ -695,7 +695,7 @@ if __name__ == "__main__":
         save_artifacts(training_results)
         
         # Add F1 score visualization
-        save_f1_visualization(training_results, r"C:\Users\acvsa\PhishingDetector\models")
+        save_f1_visualization(training_results, r"RUTA\models")
         
         logger.info("Training completed successfully!")
     except Exception as e:
