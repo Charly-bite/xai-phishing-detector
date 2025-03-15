@@ -9,9 +9,11 @@ python -m venv venv #Crear entorno virtual
 
 .\venv\Scripts\activate #Ejecutar entorno virtual
 
-pip install pandas numpy beautifulsoup4 nltk textstat scikit-learn tensorflow spacy joblib matplotlib shap lime alibi #Librerias paso 1
+pip install numpy  #Librerias paso 1
 
-python -m spacy download en_core_web_sm #Paso 2
+pandas beautifulsoup4 nltk textstat scikit-learn tensorflow spacy joblib matplotlib shap lime alibi #Paso 2
+
+python -m spacy download en_core_web_sm #Paso 3
 
 python src/preprocessing.py #Preprocessamiento de Datos
 
@@ -19,4 +21,4 @@ python src/train_model.py #Train model
 
 https://github.com/Charly-bite/Phising-tool-XAI #URL del proyecto 
 
-https://www.kaggle.com/datasets/naserabdullahalam/phishing-email-dataset #Dataset
+https://www.kaggle.com/datasets/subhajournal/phishingemails #Dataset
