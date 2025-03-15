@@ -11,11 +11,16 @@ python -m venv venv #Crear entorno virtual
 
 pip install numpy  #Librerias paso 1
 
-pandas beautifulsoup4 nltk textstat scikit-learn tensorflow spacy joblib matplotlib shap lime alibi #Paso 2
+pip install os-sys re pandas beautifulsoup4 nltk textstat #Paso 2
 
-python -m spacy download en_core_web_sm #Paso 3
+python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords')" #Paso 3
 
+python -m spacy download en_core_web_sm #Paso 4
 python src/preprocessing.py #Preprocessamiento de Datos
+
+
+pip install tensorflow pandas matplotlib scikit-learn joblib spacy shap lime alibi
+python -m spacy download en_core_web_sm #Para correr train_model.py
 
 python src/train_model.py #Train model
 
