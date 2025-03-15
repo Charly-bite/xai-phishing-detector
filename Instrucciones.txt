@@ -27,6 +27,14 @@ https://www.kaggle.com/datasets/naserabdullahalam/phishing-email-dataset #Datase
 
 python scr/preprocessing.py #Preprocessamiento de Datos
 
-pip install tensorflow #Instalar librerias para train_model
+pip install tensorflow #Google AI Model
+
+pip install matplotlib #Mathlab library
+
+pip install shap #XAI Module
+
+pip install lime
+
+pip install alibi
 
 python scr/train_model.py #Train model
