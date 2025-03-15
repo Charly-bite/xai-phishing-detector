@@ -17,7 +17,7 @@ warnings.filterwarnings("ignore", category=MarkupResemblesLocatorWarning)
 # --------------------------------------
 # Configure Logging
 # --------------------------------------
-LOG_DIR = r"C:\Users\acvsa\Desktop\New folder\Phising-tool-XAI-main\scr\logs"
+LOG_DIR = r"RUTA\scr\logs"
 os.makedirs(LOG_DIR, exist_ok=True)
 
 # Initialize logger FIRST
@@ -190,7 +190,7 @@ if __name__ == "__main__":
     try:
         logger.info("🚀 Starting preprocessing pipeline")
         
-        DATA_DIR = r"C:\Users\acvsa\PhishingDetector\data"
+        DATA_DIR = r"RUTA\data"
         OUTPUT_DIR = os.path.join(DATA_DIR, "preprocessed")
         os.makedirs(OUTPUT_DIR, exist_ok=True)
         
