@@ -11,4 +11,4 @@ python src/train_model.py #Train model
 
 https://github.com/Charly-bite/Phising-tool-XAI #URL del proyecto 
 
-pip install pandas numpy beautifulsoup4 nltk textstat scikit-learn tensorflow spacy joblib matplotlib shap lime alibi==0.5.1 && python -m spacy download en_core_web_sm #Librerias necesarias
+https://www.kaggle.com/datasets/subhajournal/phishingemails #Dataset
