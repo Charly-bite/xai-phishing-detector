@@ -1,40 +1,20 @@
-https://github.com/Charly-bite/Phising-tool-XAI #URL del proyecto 
+ 
+URLS: https://github.com/Charly-bite/Phising-tool-XAI #URL del proyecto 
+Dataset: 
+Descargar Python 3.10.12 32 bits: https://github.com/adang1345/PythonWindows/blob/master/3.10.12/python-3.10.12-full.exe
+Descargar Python 64bits: https://github.com/adang1345/PythonWindows/blob/master/3.10.12/python-3.10.12-amd64-full.exe
 
-https://github.com/adang1345/PythonWindows/blob/master/3.10.12/python-3.10.12-full.exe #Descargar Python 3.10.12 32 bits
-https://github.com/adang1345/PythonWindows/blob/master/3.10.12/python-3.10.12-amd64-full.exe #Descargar Python 64bits
+1.Abrir PowerShell con derechos de administrador: 
+2.Configurar ruta Powershell: Ejecutar: cd /ruta/ code.py
+3.Crear carpeta de data, copiar datos del dataset 
+4.Crear carpera resultados
+5.Crear entorno virtual: python -m venv venv 
+6.Ejecutar entorno virtual: \venv\Scripts\activate
+7.Instalar librerias(Ejecutar como un bloque): 
 
-cd "ruta" #Configurar ruta Powershell
+pip install pandas beautifulsoup4 nltk scikit-learn matplotlib joblib shap lime tensorflow # Add alibi if using Anchor
+# Download spacy model if using Anchor
+# pip install spacy
+# python -m spacy download en_core_web_sm
 
-#Cambiar ruta en el archivo preprocessing.py
-
-python -m venv venv #Crear entorno virtual
-
-.\venv\Scripts\activate #Ejecutar entorno virtual
-
-pip install numpy  #Librerias paso 1 #numpy: For numerical operations
-
-pip install pandas beautifulsoup4 textstat #pandas: For data manipulation #beautifulsoup4: For HTML parsing  #textstat: For readability metrics
-
- pip install nltk #Paso 2.1 #nltk: For natural language processing
-
-python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords')" #Paso 3
-
-pip install spacy #Paso 3.1
-
-python -m spacy download en_core_web_sm #Paso 4
-
-https://www.kaggle.com/datasets/naserabdullahalam/phishing-email-dataset #Dataset
-
-python scr/preprocessing.py #Preprocessamiento de Datos
-
-pip install tensorflow #Google AI Model
-
-pip install matplotlib #Mathlab library
-
-pip install shap #XAI Module
-
-pip install lime
-
-pip install alibi
-
-python scr/train_model.py #Train model
+7.Ejecutar: python code.py --data-dir /path/to/your/csv/data --output-dir /path/to/save/results
