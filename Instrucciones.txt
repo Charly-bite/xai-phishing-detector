@@ -1,6 +1,6 @@
  
 URLS: https://github.com/Charly-bite/Phising-tool-XAI #URL del proyecto 
-Dataset: 
+Dataset: https://www.kaggle.com/datasets/naserabdullahalam/phishing-email-dataset
 Descargar Python 3.10.12 32 bits: https://github.com/adang1345/PythonWindows/blob/master/3.10.12/python-3.10.12-full.exe
 Descargar Python 64bits: https://github.com/adang1345/PythonWindows/blob/master/3.10.12/python-3.10.12-amd64-full.exe
 
