@@ -10,9 +10,9 @@ Descargar Python 64bits: https://github.com/adang1345/PythonWindows/blob/master/
 4.Crear carpera resultados
 5.Crear entorno virtual: python -m venv venv 
 6.Ejecutar entorno virtual: \venv\Scripts\activate
-7.Instalar librerias(Ejecutar como un bloque): 
+7.Instalar librerias: 
 
-pip install pandas beautifulsoup4 nltk scikit-learn matplotlib joblib shap lime tensorflow # Add alibi if using Anchor
+pip install pandas beautifulsoup4 nltk scikit-learn matplotlib joblib shap lime textstat tensorflow # Add alibi if using Anchor
 # Download spacy model if using Anchor
 # pip install spacy
 # python -m spacy download en_core_web_sm
