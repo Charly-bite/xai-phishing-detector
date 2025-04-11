@@ -1,6 +1,6 @@
 Como ejecutar:
-
-1.copiar los datos del dataset en la carpeta "data"
+0.Descargar Dataset: https://www.kaggle.com/datasets/naserabdullahalam/phishing-email-dataset
+1.Copiar los datos del dataset en la carpeta "data" 
 2.Ejecutar "requirements.sh"
 3.Ejecutar entorno virtual: .\venv\Scripts\activate
 4.Formato del script para ejecutar: python main_script.py --data-dir /path/to/your/csv/data --output-dir /path/to/save/results
