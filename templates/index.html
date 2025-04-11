@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Phishing Email Detector</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; background-color: #f4f4f4; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; margin-bottom: 20px; }
+        textarea { width: 95%; height: 200px; margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; }
+        .button-container { display: flex; gap: 10px; margin-bottom: 15px; } /* Container for buttons */
+        button { /* Common button styles */
+            flex-grow: 1; /* Allow buttons to grow */
+            padding: 10px 15px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .analyze-button { background-color: #5cb85c; } /* Green */
+        .analyze-button:hover { background-color: #4cae4c; }
+        .clear-button { background-color: #f0ad4e; } /* Orange */
+        .clear-button:hover { background-color: #ec971f; }
+
+        .result { margin-top: 25px; padding: 15px; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; }
+        .phishing { background-color: #f2dede; border: 1px solid #ebccd1; color: #a94442; }
+        .legitimate { background-color: #dff0d8; border: 1px solid #d6e9c6; color: #3c763d; }
+        .error { background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .model-error { background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; padding: 10px; margin-bottom: 15px; border-radius: 4px; text-align: center;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Phishing Email Detector</h1>
+
+        <!-- Display model loading error if any -->
+        {% if model_error %}
+        <div class="model-error">
+            <strong>Warning:</strong> {{ model_error }}
+        </div>
+        {% endif %}
+
+        <form action="/predict" method="post" id="email-form"> {# Added ID to form #}
+            <label for="email_text">Paste Email Content Below:</label><br>
+            <textarea id="email_text" name="email_text" required>{{ email_text or '' }}</textarea><br>
+
+            {# Container for buttons #}
+            <div class="button-container">
+                <button type="submit" class="analyze-button">Analyze Email</button>
+                {# NEW: Clear button - type="button" prevents form submission #}
+                <button type="button" class="clear-button" onclick="clearTextArea()">Clear Text</button>
+            </div>
+        </form>
+
+        {# Result display area #}
+        {% if prediction_text %}
+        <div id="result-area" class="result {% if 'Phishing' in prediction_text %}phishing{% elif 'Legitimate' in prediction_text %}legitimate{% else %}error{% endif %}">
+             {{ prediction_text }}
+        </div>
+        {% endif %}
+    </div>
+
+    {# NEW: JavaScript function #}
+    <script>
+        function clearTextArea() {
+            // Get the textarea element by its ID
+            var textArea = document.getElementById('email_text');
+            // Set its value to an empty string
+            textArea.value = '';
+            // Optionally, clear the result area as well
+            var resultArea = document.getElementById('result-area');
+            if (resultArea) {
+                resultArea.innerHTML = ''; // Clear content
+                resultArea.className = 'result'; // Reset class
+            }
+            // Optionally, focus back on the text area
+            textArea.focus();
+        }
+    </script>
+
+</body>
+</html>
