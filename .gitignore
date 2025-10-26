@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Project specific
+saved data/
+phishing_results_embeddings/
+*.log
+*.parquet
+
+# Model files (optional - uncomment if models are too large for git)
+# *.pkl
+# *.keras
+# *.h5
+
+# Data files (keep data directory structure but ignore CSVs)
+data/*.csv
+test_data/*.csv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/

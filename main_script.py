@@ -104,6 +104,7 @@ except LookupError as e:
         logging.info("Downloading NLTK punkt tokenizer...");
         try:
             nltk.download('punkt', quiet=True)
+            nltk.download('punkt_tab', quiet=True)  # Required for NLTK 3.9+
             logging.info("NLTK punkt tokenizer downloaded.")
         except Exception as download_e:
             logging.error(f"Failed to download punkt: {download_e}", exc_info=False)
@@ -398,7 +399,7 @@ def load_and_preprocess_data(data_dir, embedding_model, label_col_hints=None, te
     try:
         final_df = pd.concat(all_dfs, ignore_index=True); logger.info(f"--- Combined all files. Total rows: {len(final_df)} ---")
         if final_df.empty: logger.error("Concatenated DataFrame empty."); raise RuntimeError("Concatenated DataFrame empty.")
-    except Exception as e: logger.error(f"Failed to concat DataFrames: {e}", exc_df=True); raise e # Changed exc_info to exc_df typo fix? No, exc_info is correct
+    except Exception as e: logger.error(f"Failed to concat DataFrames: {e}", exc_info=True); raise e
 
     # Final checks post-concat
     embedding_cols_present_final = [col for col in final_df.columns if col.startswith('embedding_')]
