@@ -128,7 +128,8 @@ except LookupError:
 
 # Sentence Transformer Model Name
 # Using a multilingual model optimized for sentence similarity
-EMBEDDING_MODEL_NAME = 'sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2'
+# Upgraded to mpnet-base for better quality (768 dims vs 384)
+EMBEDDING_MODEL_NAME = 'sentence-transformers/paraphrase-multilingual-mpnet-base-v2'
 embedding_model = None # Will be loaded later
 
 # --------------------------------------
